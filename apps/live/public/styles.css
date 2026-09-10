@@ -1,0 +1,595 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  font-family: system-ui, Segoe UI, Roboto, sans-serif;
+  background: #0b141a;
+  color: #e7e9ea;
+}
+
+.wrap {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 1rem;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 320px;
+}
+
+.panel label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+}
+
+.device-row select,
+.call-devices-inline select {
+  padding: 0.45rem 0.5rem;
+  border: 1px solid #38444d;
+  border-radius: 8px;
+  background: #15202b;
+  color: inherit;
+  font-size: 0.85rem;
+}
+
+.sound-opt {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #8b98a5;
+}
+
+.sound-opt input {
+  width: 1rem;
+  height: 1rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+input {
+  padding: 0.5rem 0.65rem;
+  border: 1px solid #38444d;
+  border-radius: 8px;
+  background: #15202b;
+  color: inherit;
+}
+
+button {
+  padding: 0.55rem 1rem;
+  border: none;
+  border-radius: 999px;
+  background: #00a884;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:hover {
+  filter: brightness(1.06);
+}
+
+.btn-invite {
+  background: #38444d;
+  color: #e7e9ea;
+}
+
+.btn-invite:hover {
+  filter: brightness(1.1);
+}
+
+.copy-feedback {
+  color: #8899a6;
+  border-left: 3px solid #00a884;
+  padding-left: 0.65rem;
+}
+
+.hint {
+  font-size: 0.85rem;
+  color: #8b98a5;
+  margin: 0;
+}
+
+.media-hint {
+  border-left: 3px solid #00a884;
+  padding-left: 0.65rem;
+}
+
+.err {
+  color: #f4212e;
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* —— WhatsApp-style full-screen call —— */
+
+.call-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  background: #000;
+}
+
+.call-topbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: max(0.5rem, env(safe-area-inset-top)) 1rem 0.5rem;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.85) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.call-timer {
+  font-variant-numeric: tabular-nums;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 0.02em;
+}
+
+.call-meta {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.call-main {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: #000;
+}
+
+/* Base grid container */
+.call-remote-grid {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  box-sizing: border-box;
+}
+
+/* 1 other person: WhatsApp-style — one peer fills the screen; you stay in PiP */
+.call-main--duo > .call-remote-grid {
+  display: block;
+  position: relative;
+  padding: 0;
+}
+
+.call-main--duo > .call-remote-grid .call-remote-tile {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  border-radius: 0;
+  object-fit: cover;
+}
+
+/* Self fills the stage: solo broadcaster (the common case — you ARE the
+   stream), or 1:1 with views swapped. */
+.call-main > video#local {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 2+ others: equal split grid */
+.call-main--group > .call-remote-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr));
+  grid-auto-rows: minmax(0, 1fr);
+  gap: 4px;
+  padding: 3rem 0.25rem 8rem;
+  align-content: stretch;
+}
+
+.call-main--group > .call-remote-grid .call-remote-tile {
+  min-height: 0;
+  border-radius: 8px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #111;
+}
+
+.call-remote-tile {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: #111;
+}
+
+.call-waiting {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.45);
+  pointer-events: none;
+}
+
+.call-waiting[hidden] {
+  display: none;
+}
+
+video#local {
+  transform: scaleX(-1);
+}
+
+.call-pip {
+  position: absolute;
+  top: max(2.75rem, calc(env(safe-area-inset-top) + 2rem));
+  right: max(0.75rem, env(safe-area-inset-right));
+  width: min(32vw, 168px);
+  aspect-ratio: 3 / 4;
+  max-height: 42vh;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow:
+    0 4px 24px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 0.12);
+  z-index: 2;
+  cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.call-pip:has(.call-remote-grid) {
+  width: min(42vw, 240px);
+  aspect-ratio: auto;
+  max-height: 46vh;
+  min-height: 120px;
+}
+
+.call-pip:focus-visible {
+  outline: 2px solid rgba(0, 168, 132, 0.85);
+  outline-offset: 2px;
+}
+
+.call-pip:active {
+  opacity: 0.92;
+}
+
+.call-pip .call-remote-grid {
+  width: 100%;
+  height: 100%;
+  padding: 2px;
+  gap: 2px;
+  grid-template-columns: 1fr;
+  grid-auto-rows: 1fr;
+}
+
+.call-pip video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+.call-devices-inline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  pointer-events: auto;
+  max-width: 100%;
+}
+
+.call-devices-inline select {
+  max-width: min(160px, 42vw);
+}
+
+.call-chrome {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 3;
+  padding: 0.5rem 1rem max(0.75rem, env(safe-area-inset-bottom));
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, transparent 100%);
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.call-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  pointer-events: auto;
+}
+
+.call-btn {
+  width: min(56px, 14vw);
+  height: min(56px, 14vw);
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.15s ease,
+    transform 0.1s ease;
+}
+
+.call-btn:hover {
+  filter: none;
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.call-btn:active {
+  transform: scale(0.96);
+}
+
+.call-btn.is-off {
+  background: rgba(234, 0, 56, 0.85);
+}
+
+.call-btn.is-off:hover {
+  background: rgba(234, 0, 56, 1);
+}
+
+.call-btn-emoji {
+  font-size: 1.35rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.call-btn-copy {
+  width: auto;
+  min-width: auto;
+  height: min(48px, 12vw);
+  min-height: 44px;
+  padding: 0 1rem;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.call-btn-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  pointer-events: none;
+}
+
+.call-btn-hangup {
+  background: #ea0038;
+  width: min(64px, 16vw);
+  height: min(64px, 16vw);
+}
+
+.call-btn-hangup:hover {
+  background: #ff1744;
+}
+
+.call-status {
+  margin: 0;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.92);
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+}
+
+.call-copy-toast {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #b8e0d2;
+  pointer-events: none;
+}
+
+/* Lobby hidden while in call */
+#lobby[hidden] {
+  display: none;
+}
+
+/* Shown only when this page is opened directly (not inside Film’s iframe) */
+.film-shell-banner {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.65rem 1rem;
+  background: #1a2e24;
+  border-bottom: 1px solid #2d4a3e;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+.film-shell-banner p {
+  margin: 0;
+  flex: 1;
+  color: #e7e9ea;
+}
+
+.film-shell-banner code {
+  font-size: 0.8rem;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+}
+
+.film-shell-banner a {
+  color: #6ee7b7;
+  font-weight: 600;
+}
+
+.film-shell-banner-close {
+  flex-shrink: 0;
+  border: none;
+  background: transparent;
+  color: #8696a0;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0 0.15rem;
+}
+
+.film-shell-banner-close:hover {
+  color: #e7e9ea;
+}
+
+/* Engine-only gate (no standalone video-call lobby) */
+body.engine-only-mode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: 1.5rem;
+}
+
+.engine-only-card {
+  max-width: 420px;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  border: 1px solid #38444d;
+  border-radius: 12px;
+  background: #15202b;
+}
+
+.engine-only-card h1 {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.engine-only-card a {
+  color: #6ee7b7;
+  font-weight: 600;
+}
+
+.engine-only-hint {
+  font-size: 0.85rem;
+  color: #8b98a5;
+  margin-top: 1rem;
+}
+
+.call-topbar--embed {
+  opacity: 0.85;
+  font-size: 0.75rem;
+}
+
+.call-chrome--embed .call-toolbar {
+  justify-content: center;
+}
+
+.embed-err {
+  text-align: center;
+  color: #f87171;
+}
+
+/* TikTok-style broadcast embed */
+body.broadcast-mode {
+  background: #000;
+}
+
+body.broadcast-mode .wrap {
+  max-width: none;
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+  height: 100dvh;
+}
+
+body.broadcast-mode #lobby {
+  display: none;
+}
+
+body.broadcast-mode #call-panel {
+  height: 100%;
+  min-height: 100dvh;
+}
+
+body.broadcast-mode .call-main {
+  min-height: 100dvh;
+  border-radius: 0;
+  background: #000;
+}
+
+body.broadcast--solo .call-remote-tile,
+body.broadcast--solo #remote-grid video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+body.broadcast--duo .call-main--duo #remote-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2px;
+  height: 100%;
+}
+
+body.broadcast--duo .call-main--duo .call-pip {
+  display: none;
+}
+
+body.broadcast--grid .call-main--group #remote-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  height: 100%;
+}
+
+body.broadcast-mode .call-pip {
+  width: 28%;
+  max-width: 120px;
+  bottom: 5rem;
+  right: 0.5rem;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+body.broadcast-mode .call-controls {
+  bottom: env(safe-area-inset-bottom, 12px);
+}

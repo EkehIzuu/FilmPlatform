@@ -1,0 +1,14 @@
+{
+  "name": "film-platform",
+  "private": true,
+  "workspaces": ["apps/*"],
+  "scripts": {
+    "dev": "node scripts/dev-banner.mjs && concurrently -n web,live -c blue,magenta \"npm run dev -w @film/web\" \"npm run dev -w @film/live\"",
+    "dev:web": "npm run dev -w @film/web",
+    "dev:live": "npm run dev -w @film/live",
+    "build": "npm run build -w @film/web"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

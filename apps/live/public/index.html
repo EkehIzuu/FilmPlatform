@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>Izora Live Engine</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div id="engine-only" class="engine-only" hidden>
+      <main class="engine-only-card">
+        <h1>Live engine</h1>
+        <p>
+          This port powers video for Izora profile lives. It is not a standalone app — open the main
+          product instead.
+        </p>
+        <p>
+          <a id="engine-only-app-link" href="http://localhost:5173">http://localhost:5173</a>
+        </p>
+        <p class="engine-only-hint">
+          Creators and fans go to <strong>/u/username/live</strong> on the main app. Run
+          <code>npm run dev</code> from the FilmPlatform folder.
+        </p>
+      </main>
+    </div>
+
+    <section class="call-screen" id="call-panel" hidden>
+      <header class="call-topbar call-topbar--embed">
+        <span class="call-timer" id="call-timer" aria-live="polite"></span>
+        <span class="call-meta" id="call-meta"></span>
+      </header>
+      <div class="call-main" id="call-main">
+        <div class="call-remote-grid" id="remote-grid"></div>
+        <p class="call-waiting" id="call-waiting">Connecting…</p>
+      </div>
+      <div
+        class="call-pip"
+        id="call-pip"
+        role="button"
+        tabindex="0"
+        aria-label="Swap fullscreen and preview"
+      >
+        <video id="local" autoplay playsinline webkit-playsinline muted></video>
+      </div>
+      <div class="call-chrome call-chrome--embed">
+        <div class="call-toolbar" role="toolbar" aria-label="Stream controls">
+          <button type="button" class="call-btn" id="btn-mic" title="Mute (M)" aria-label="Mute microphone" aria-pressed="false">
+            <span class="call-btn-emoji" id="btn-mic-icon">🎤</span>
+          </button>
+          <button type="button" class="call-btn" id="btn-cam" title="Camera (V)" aria-label="Turn camera off" aria-pressed="false">
+            <span class="call-btn-emoji" id="btn-cam-icon">📷</span>
+          </button>
+          <button type="button" class="call-btn call-btn-hangup" id="btn-hangup" title="Leave (Esc)" aria-label="Leave stream">
+            <span class="call-btn-label">Leave</span>
+          </button>
+        </div>
+        <p class="call-status" id="status"></p>
+        <p class="err embed-err" id="join-err" hidden></p>
+      </div>
+    </section>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="module" src="/app.js"></script>
+  </body>
+</html>
